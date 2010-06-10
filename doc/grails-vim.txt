@@ -1,0 +1,626 @@
+*Grails-vim.txt*   Make your IDE-using friends jealous.
+
+                              Reference Manual~
+
+==============================================================================
+CONTENTS                                                   *grails-vim-contents*
+
+    1.Intro...................................|Grails-vim|
+    2.Navigation Commands.....................|Grails-vimNavigation|
+        2.1.Global commands...................|Grails-vimGlobalCommands|
+        2.2.Bookmarks.........................|Grails-vimBookmarks|
+            2.2.1.The bookmark table..........|Grails-vimBookmarkTable|
+            2.2.2.Bookmark commands...........|Grails-vimBookmarkCommands|
+            2.2.3.Invalid bookmarks...........|Grails-vimInvalidBookmarks|
+        2.3.Grails Vim mappings...............|Grails-vimMappings|
+        2.4.Grails Vim  menu..................|Grails-vimMenu|
+    3.Options.................................|Grails-vimOptions|
+        3.1.Option summary....................|Grails-vimOptionSummary|
+        3.2.Option details....................|Grails-vimOptionDetails|
+    4.The NERD tree API.......................|Grails-vimAPI|
+        4.1.Key map API.......................|Grails-vimKeymapAPI|
+        4.2.Menu API..........................|Grails-vimMenuAPI|
+    5.About...................................|Grails-vimAbout|
+    6.Changelog...............................|Grails-vimChangelog|
+    7.Credits.................................|Grails-vimCredits|
+    8.License.................................|Grails-vimLicense|
+
+==============================================================================
+1. Intro                                                            *grails-vim*
+
+What is Grails-Vim??
+
+Grails-Vim is modeled after Tim Pope's Rails.vim. It provides shortcuts for
+navigating Grails projects, as well as help with testing Grails apps.
+
+Even if you use an IDE most of the time, Grails-vim is handy when you don't
+have 10 minutes to wait for an IDE to start or if you're on a machine with less
+than 2 TB of memory. 
+
+==============================================================================
+2. Functionality provided                              *Grails-vimFunctionality*
+
+------------------------------------------------------------------------------
+2.1. Global Commands                                  *Grails-vimGlobalCommands*
+
+:Grails-vim [<start-directory> | <bookmark>]                         *:Grails-vim*
+    Opens a fresh NERD tree. The root of the tree depends on the argument
+    given. There are 3 cases: If no argument is given, the current directory
+    will be used.  If a directory is given, that will be used. If a bookmark
+    name is given, the corresponding directory will be used.  For example: >
+        :Grails-vim /home/marty/vim7/src
+        :Grails-vim foo   (foo is the name of a bookmark)
+<
+:Grails-vimFromBookmark <bookmark>                       *:Grails-vimFromBookmark*
+    Opens a fresh NERD tree with the root initialized to the dir for
+    <bookmark>.  This only reason to use this command over :Grails-vim is for
+    the completion (which is for bookmarks rather than directories).
+
+:Grails-vimToggle [<start-directory> | <bookmark>]             *:Grails-vimToggle*
+    If a NERD tree already exists for this tab, it is reopened and rendered
+    again.  If no NERD tree exists for this tab then this command acts the
+    same as the |:Grails-vim| command.
+
+:Grails-vimMirror                                              *:Grails-vimMirror*
+    Shares an existing NERD tree, from another tab, in the current tab.
+    Changes made to one tree are reflected in both as they are actually the
+    same buffer.
+
+    If only one other NERD tree exists, that tree is automatically mirrored. If
+    more than one exists, the script will ask which tree to mirror.
+
+:Grails-vimClose                                                *:Grails-vimClose*
+    Close the NERD tree in this tab.
+
+:Grails-vimFind                                                  *:Grails-vimFind*
+    Find the current file in the tree. If no tree exists for the current tab,
+    or the file is not under the current root, then initialize a new tree where
+    the root is the directory of the current file.
+
+------------------------------------------------------------------------------
+2.2. Bookmarks                                             *Grails-vimBookmarks*
+
+Bookmarks in the NERD tree are a way to tag files or directories of interest.
+For example, you could use bookmarks to tag all of your project directories.
+
+------------------------------------------------------------------------------
+2.2.1. The Bookmark Table                              *Grails-vimBookmarkTable*
+
+If the bookmark table is active (see |Grails-vim-B| and
+|'Grails-vimShowBookmarks'|), it will be rendered above the tree. You can double
+click bookmarks or use the |Grails-vim-o| mapping to activate them. See also,
+|Grails-vim-t| and |Grails-vim-T|
+
+------------------------------------------------------------------------------
+2.2.2. Bookmark commands                            *Grails-vimBookmarkCommands*
+
+Note that the following commands are only available in the NERD tree buffer.
+
+:Bookmark <name>
+    Bookmark the current node as <name>. If there is already a <name>
+    bookmark, it is overwritten. <name> must not contain spaces.
+
+:BookmarkToRoot <bookmark>
+    Make the directory corresponding to <bookmark> the new root. If a treenode
+    corresponding to <bookmark> is already cached somewhere in the tree then
+    the current tree will be used, otherwise a fresh tree will be opened.
+    Note that if <bookmark> points to a file then its parent will be used
+    instead.
+
+:RevealBookmark <bookmark>
+    If the node is cached under the current root then it will be revealed
+    (i.e. directory nodes above it will be opened) and the cursor will be
+    placed on it.
+
+:OpenBookmark <bookmark>
+    <bookmark> must point to a file. The file is opened as though |Grails-vim-o|
+    was applied. If the node is cached under the current root then it will be
+    revealed and the cursor will be placed on it.
+
+:ClearBookmarks [<bookmarks>]
+    Remove all the given bookmarks. If no bookmarks are given then remove all
+    bookmarks on the current node.
+
+:ClearAllBookmarks
+    Remove all bookmarks.
+
+:ReadBookmarks
+    Re-read the bookmarks in the |'Grails-vimBookmarksFile'|.
+
+See also |:Grails-vim| and |:Grails-vimFromBookmark|.
+
+------------------------------------------------------------------------------
+2.2.3. Invalid Bookmarks                            *Grails-vimInvalidBookmarks*
+
+If invalid bookmarks are detected, the script will issue an error message and
+the invalid bookmarks will become unavailable for use.
+
+These bookmarks will still be stored in the bookmarks file (see
+|'Grails-vimBookmarksFile'|), down the bottom. There will always be a blank line
+after the valid bookmarks but before the invalid ones.
+
+Each line in the bookmarks file represents one bookmark. The proper format is:
+<bookmark name><space><full path to the bookmark location>
+
+After you have corrected any invalid bookmarks, either restart vim, or go
+:ReadBookmarks from the NERD tree window.
+
+------------------------------------------------------------------------------
+2.3. NERD tree Mappings                                     *Grails-vimMappings*
+
+Default  Description~                                             help-tag~
+Key~
+
+o.......Open files, directories and bookmarks....................|Grails-vim-o|
+go......Open selected file, but leave cursor in the Grails-vim.....|Grails-vim-go|
+t.......Open selected node/bookmark in a new tab.................|Grails-vim-t|
+T.......Same as 't' but keep the focus on the current tab........|Grails-vim-T|
+i.......Open selected file in a split window.....................|Grails-vim-i|
+gi......Same as i, but leave the cursor on the Grails-vim..........|Grails-vim-gi|
+s.......Open selected file in a new vsplit.......................|Grails-vim-s|
+gs......Same as s, but leave the cursor on the Grails-vim..........|Grails-vim-gs|
+O.......Recursively open the selected directory..................|Grails-vim-O|
+x.......Close the current nodes parent...........................|Grails-vim-x|
+X.......Recursively close all children of the current node.......|Grails-vim-X|
+e.......Edit the current dif.....................................|Grails-vim-e|
+
+<CR>...............same as |Grails-vim-o|.
+double-click.......same as the |Grails-vim-o| map.
+middle-click.......same as |Grails-vim-i| for files, same as
+                   |Grails-vim-e| for dirs.
+
+D.......Delete the current bookmark .............................|Grails-vim-D|
+
+P.......Jump to the root node....................................|Grails-vim-P|
+p.......Jump to current nodes parent.............................|Grails-vim-p|
+K.......Jump up inside directories at the current tree depth.....|Grails-vim-K|
+J.......Jump down inside directories at the current tree depth...|Grails-vim-J|
+<C-J>...Jump down to the next sibling of the current directory...|Grails-vim-C-J|
+<C-K>...Jump up to the previous sibling of the current directory.|Grails-vim-C-K|
+
+C.......Change the tree root to the selected dir.................|Grails-vim-C|
+u.......Move the tree root up one directory......................|Grails-vim-u|
+U.......Same as 'u' except the old root node is left open........|Grails-vim-U|
+r.......Recursively refresh the current directory................|Grails-vim-r|
+R.......Recursively refresh the current root.....................|Grails-vim-R|
+m.......Display the NERD tree menu...............................|Grails-vim-m|
+cd......Change the CWD to the dir of the selected node...........|Grails-vim-cd|
+
+I.......Toggle whether hidden files displayed....................|Grails-vim-I|
+f.......Toggle whether the file filters are used.................|Grails-vim-f|
+F.......Toggle whether files are displayed.......................|Grails-vim-F|
+B.......Toggle whether the bookmark table is displayed...........|Grails-vim-B|
+
+q.......Close the Grails-vim window................................|Grails-vim-q|
+A.......Zoom (maximize/minimize) the Grails-vim window.............|Grails-vim-A|
+?.......Toggle the display of the quick help.....................|Grails-vim-?|
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-o*
+Default key: o
+Map option: Grails-vimMapActivateNode
+Applies to: files and directories.
+
+If a file node is selected, it is opened in the previous window.
+
+If a directory is selected it is opened or closed depending on its current
+state.
+
+If a bookmark that links to a directory is selected then that directory
+becomes the new root.
+
+If a bookmark that links to a file is selected then that file is opened in the
+previous window.
+
+------------------------------------------------------------------------------
+                                                                 *Grails-vim-go*
+Default key: go
+Map option: None
+Applies to: files.
+
+If a file node is selected, it is opened in the previous window, but the
+cursor does not move.
+
+The key combo for this mapping is always "g" + Grails-vimMapActivateNode (see
+|Grails-vim-o|).
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-t*
+Default key: t
+Map option: Grails-vimMapOpenInTab
+Applies to: files and directories.
+
+Opens the selected file in a new tab. If a directory is selected, a fresh
+NERD Tree for that directory is opened in a new tab.
+
+If a bookmark which points to a directory is selected, open a NERD tree for
+that directory in a new tab. If the bookmark points to a file, open that file
+in a new tab.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-T*
+Default key: T
+Map option: Grails-vimMapOpenInTabSilent
+Applies to: files and directories.
+
+The same as |Grails-vim-t| except that the focus is kept in the current tab.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-i*
+Default key: i
+Map option: Grails-vimMapOpenSplit
+Applies to: files.
+
+Opens the selected file in a new split window and puts the cursor in the new
+window.
+
+------------------------------------------------------------------------------
+                                                                 *Grails-vim-gi*
+Default key: gi
+Map option: None
+Applies to: files.
+
+The same as |Grails-vim-i| except that the cursor is not moved.
+
+The key combo for this mapping is always "g" + Grails-vimMapOpenSplit (see
+|Grails-vim-i|).
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-s*
+Default key: s
+Map option: Grails-vimMapOpenVSplit
+Applies to: files.
+
+Opens the selected file in a new vertically split window and puts the cursor in
+the new window.
+
+------------------------------------------------------------------------------
+                                                                 *Grails-vim-gs*
+Default key: gs
+Map option: None
+Applies to: files.
+
+The same as |Grails-vim-s| except that the cursor is not moved.
+
+The key combo for this mapping is always "g" + Grails-vimMapOpenVSplit (see
+|Grails-vim-s|).
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-O*
+Default key: O
+Map option: Grails-vimMapOpenRecursively
+Applies to: directories.
+
+Recursively opens the selelected directory.
+
+All files and directories are cached, but if a directory would not be
+displayed due to file filters (see |'Grails-vimIgnore'| |Grails-vim-f|) or the
+hidden file filter (see |'Grails-vimShowHidden'|) then its contents are not
+cached. This is handy, especially if you have .svn directories.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-x*
+Default key: x
+Map option: Grails-vimMapCloseDir
+Applies to: files and directories.
+
+Closes the parent of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-X*
+Default key: X
+Map option: Grails-vimMapCloseChildren
+Applies to: directories.
+
+Recursively closes all children of the selected directory.
+
+Tip: To quickly "reset" the tree, use |Grails-vim-P| with this mapping.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-e*
+Default key: e
+Map option: Grails-vimMapOpenExpl
+Applies to: files and directories.
+
+|:edit|s the selected directory, or the selected file's directory. This could
+result in a NERD tree or a netrw being opened, depending on
+|'Grails-vimHijackNetrw'|.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-D*
+Default key: D
+Map option: Grails-vimMapDeleteBookmark
+Applies to: lines in the bookmarks table
+
+Deletes the currently selected bookmark.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-P*
+Default key: P
+Map option: Grails-vimMapJumpRoot
+Applies to: no restrictions.
+
+Jump to the tree root.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-p*
+Default key: p
+Map option: Grails-vimMapJumpParent
+Applies to: files and directories.
+
+Jump to the parent node of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-K*
+Default key: K
+Map option: Grails-vimMapJumpFirstChild
+Applies to: files and directories.
+
+Jump to the first child of the current nodes parent.
+
+If the cursor is already on the first node then do the following:
+    * loop back thru the siblings of the current nodes parent until we find an
+      open dir with children
+    * go to the first child of that node
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-J*
+Default key: J
+Map option: Grails-vimMapJumpLastChild
+Applies to: files and directories.
+
+Jump to the last child of the current nodes parent.
+
+If the cursor is already on the last node then do the following:
+    * loop forward thru the siblings of the current nodes parent until we find
+      an open dir with children
+    * go to the last child of that node
+
+------------------------------------------------------------------------------
+                                                                *Grails-vim-C-J*
+Default key: <C-J>
+Map option: Grails-vimMapJumpNextSibling
+Applies to: files and directories.
+
+Jump to the next sibling of the selected node.
+
+------------------------------------------------------------------------------
+                                                                *Grails-vim-C-K*
+Default key: <C-K>
+Map option: Grails-vimMapJumpPrevSibling
+Applies to: files and directories.
+
+Jump to the previous sibling of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-C*
+Default key: C
+Map option: Grails-vimMapChdir
+Applies to: directories.
+
+Make the selected directory node the new tree root. If a file is selected, its
+parent is used.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-u*
+Default key: u
+Map option: Grails-vimMapUpdir
+Applies to: no restrictions.
+
+Move the tree root up a dir (like doing a "cd ..").
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-U*
+Default key: U
+Map option: Grails-vimMapUpdirKeepOpen
+Applies to: no restrictions.
+
+Like |Grails-vim-u| except that the old tree root is kept open.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-r*
+Default key: r
+Map option: Grails-vimMapRefresh
+Applies to: files and directories.
+
+If a dir is selected, recursively refresh that dir, i.e. scan the filesystem
+for changes and represent them in the tree.
+
+If a file node is selected then the above is done on it's parent.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-R*
+Default key: R
+Map option: Grails-vimMapRefreshRoot
+Applies to: no restrictions.
+
+Recursively refresh the tree root.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-m*
+Default key: m
+Map option: Grails-vimMapMenu
+Applies to: files and directories.
+
+Display the NERD tree menu. See |Grails-vimMenu| for details.
+
+------------------------------------------------------------------------------
+                                                                 *Grails-vim-cd*
+Default key: cd
+Map option: Grails-vimMapChdir
+Applies to: files and directories.
+
+Change vims current working directory to that of the selected node.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-I*
+Default key: I
+Map option: Grails-vimMapToggleHidden
+Applies to: no restrictions.
+
+Toggles whether hidden files (i.e. "dot files") are displayed.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-f*
+Default key: f
+Map option: Grails-vimMapToggleFilters
+Applies to: no restrictions.
+
+Toggles whether file filters are used. See |'Grails-vimIgnore'| for details.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-F*
+Default key: F
+Map option: Grails-vimMapToggleFiles
+Applies to: no restrictions.
+
+Toggles whether file nodes are displayed.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-B*
+Default key: B
+Map option: Grails-vimMapToggleBookmarks
+Applies to: no restrictions.
+
+Toggles whether the bookmarks table is displayed.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-q*
+Default key: q
+Map option: Grails-vimMapQuit
+Applies to: no restrictions.
+
+Closes the NERDtree window.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-A*
+Default key: A
+Map option: Grails-vimMapToggleZoom
+Applies to: no restrictions.
+
+Maximize (zoom) and minimize the NERDtree window.
+
+------------------------------------------------------------------------------
+                                                                  *Grails-vim-?*
+Default key: ?
+Map option: Grails-vimMapHelp
+Applies to: no restrictions.
+
+Toggles whether the quickhelp is displayed.
+
+------------------------------------------------------------------------------
+2.3. The NERD tree menu                                         *Grails-vimMenu*
+
+The NERD tree has a menu that can be programmed via the an API (see
+|Grails-vimMenuAPI|). The idea is to simulate the "right click" menus that most
+file explorers have.
+
+The script comes with two default menu plugins: exec_menuitem.vim and
+fs_menu.vim. fs_menu.vim adds some basic filesystem operations to the menu for
+creating/deleting/moving/copying files and dirs. exec_menuitem.vim provides a
+menu item to execute executable files.
+
+Related tags: |Grails-vim-m| |Grails-vimApi|
+
+==============================================================================
+3. Customisation                                             *Grails-vimOptions*
+
+
+------------------------------------------------------------------------------
+3.1. Customisation summary                             *Grails-vimOptionSummary*
+
+The script provides the following options that can customise the behaviour the
+NERD tree. These options should be set in your vimrc.
+
+|'loaded_nerd_tree'|            Turns off the script.
+
+|'NERDChristmasTree'|           Tells the NERD tree to make itself colourful
+                                and pretty.
+
+|'Grails-vimAutoCenter'|          Controls whether the NERD tree window centers
+                                when the cursor moves within a specified
+                                distance to the top/bottom of the window.
+|'Grails-vimAutoCenterThreshold'| Controls the sensitivity of autocentering.
+
+|'Grails-vimCaseSensitiveSort'|   Tells the NERD tree whether to be case
+                                sensitive or not when sorting nodes.
+
+|'Grails-vimChDirMode'|           Tells the NERD tree if/when it should change
+                                vim's current working directory.
+
+|'Grails-vimHighlightCursorline'| Tell the NERD tree whether to highlight the
+                                current cursor line.
+
+|'Grails-vimHijackNetrw'|         Tell the NERD tree whether to replace the netrw
+                                autocommands for exploring local directories.
+
+|'Grails-vimIgnore'|              Tells the NERD tree which files to ignore.
+
+|'Grails-vimBookmarksFile'|       Where the bookmarks are stored.
+
+|'Grails-vimMouseMode'|           Tells the NERD tree how to handle mouse
+                                clicks.
+
+|'Grails-vimQuitOnOpen'|          Closes the tree window after opening a file.
+
+|'Grails-vimShowBookmarks'|       Tells the NERD tree whether to display the
+                                bookmarks table on startup.
+
+|'Grails-vimShowFiles'|           Tells the NERD tree whether to display files
+                                in the tree on startup.
+
+|'Grails-vimShowHidden'|          Tells the NERD tree whether to display hidden
+                                files on startup.
+
+|'Grails-vimShowLineNumbers'|     Tells the NERD tree whether to display line
+                                numbers in the tree window.
+
+|'Grails-vimSortOrder'|           Tell the NERD tree how to sort the nodes in
+                                the tree.
+
+|'Grails-vimStatusline'|          Set a statusline for NERD tree windows.
+
+|'Grails-vimWinPos'|              Tells the script where to put the NERD tree
+                                window.
+
+|'Grails-vimWinSize'|             Sets the window size when the NERD tree is
+                                opened.
+
+
+==============================================================================
+5. About                                                       *Grails-vimAbout*
+
+The author of Grails-vim likes open source software and decided to stop
+complaining about other people's software and start giving back.
+
+Please contact me at nathan.neff@gmail.com with any questions, feedback, requests or
+patches.
+
+The latest stable versions can be found at
+    TODO
+
+The latest dev versions are on github
+    http://github.com/NathanNeff/grails-vim
+
+
+==============================================================================
+6. Changelog                                               *Grails-vimChangelog*
+
+0.1 features:
+    Jump to controllers, domain models, tests.  Open views/<model> directory to
+    see the views that belong to <model>
+
+    View errors/failed tests using <leader>gg
+
+==============================================================================
+7. Credits                                                   *Grails-vimCredits*
+
+Thanks to the following people for testing, bug reports, ideas etc. 
+
+    Tim Pope
+    Oren Goldberg
+
+==============================================================================
+8. License                                                   *Grails-vimLicense*
+
+arails-vim is licensed under some license.
