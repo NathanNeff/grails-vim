@@ -226,7 +226,7 @@ function s:GrailsReadTestOutput()
     let old_efm = &efm
     " format is file:lineNumber:message
     set efm=%f:%l:%m
-    cexpr system("$VIMHOME/bin/testSuitesXmlParse.groovy")
+    cexpr system(s:parseScript)
     botright copen
 
     let &efm = old_efm
@@ -258,6 +258,8 @@ noremap <SID>GrailsDisplayTestReports :call <SID>GrailsDisplayTestReports()<CR>
 noremap <unique> <script> <Plug>GrailsDisplayTestXml <SID>GrailsDisplayTestXml
 noremap <SID>GrailsDisplayTestXml :call <SID>GrailsDisplayTestXml()<CR>
 " }}}1
+
+let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
 
 " Mappings {{{1
 if !hasmapto('<Plug>GrailsDisplayViews') 
