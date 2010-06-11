@@ -63,6 +63,21 @@ Before using these mappings, run the tests for your Grails app.
                         versions of the test reports are of course more structured, and can help with
                         debugging tests.
 
+------------------------------------------------------------------------------
+Controller navigation                                *Grails-vim-Conroller-Mappings*
+
+When you open a Controller, you can use the following quick-marks to quickly navigate
+the controller:
+
+'c                      Jumps to "Create" action
+'d                      Jumps to the "Delete" action
+'e                      "Edit" action
+'h                      "Show" action
+'i                      "Index" action
+'l                      "List" action
+'s                      "Save" action
+'u                      "Update" action
+
 ==============================================================================
 Screenshots                                                *Grails-vim-Screenshots*
 
