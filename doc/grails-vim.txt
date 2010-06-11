@@ -1,95 +1,48 @@
 *Grails-vim.txt*   Make your IDE-using friends jealous.
 
-                              Reference Manual~
+Introduction                                                            *grails-vim*
 
-==============================================================================
-CONTENTS                                                   *grails-vim-contents*
+What is Grails-Vim?
 
-    1.Intro...................................|Grails-vim|
-    2.Navigation Commands.....................|Grails-vimNavigation|
-        2.1.Global commands...................|Grails-vimGlobalCommands|
-        2.2.Bookmarks.........................|Grails-vimBookmarks|
-            2.2.1.The bookmark table..........|Grails-vimBookmarkTable|
-            2.2.2.Bookmark commands...........|Grails-vimBookmarkCommands|
-            2.2.3.Invalid bookmarks...........|Grails-vimInvalidBookmarks|
-        2.3.Grails Vim mappings...............|Grails-vimMappings|
-        2.4.Grails Vim  menu..................|Grails-vimMenu|
-    3.Options.................................|Grails-vimOptions|
-        3.1.Option summary....................|Grails-vimOptionSummary|
-        3.2.Option details....................|Grails-vimOptionDetails|
-    4.The NERD tree API.......................|Grails-vimAPI|
-        4.1.Key map API.......................|Grails-vimKeymapAPI|
-        4.2.Menu API..........................|Grails-vimMenuAPI|
-    5.About...................................|Grails-vimAbout|
-    6.Changelog...............................|Grails-vimChangelog|
-    7.Credits.................................|Grails-vimCredits|
-    8.License.................................|Grails-vimLicense|
-
-==============================================================================
-1. Intro                                                            *grails-vim*
-
-What is Grails-Vim??
-
-Grails-Vim is modeled after Tim Pope's Rails.vim. It provides shortcuts for
-navigating Grails projects, as well as help with testing Grails apps.
+Grails-Vim is modeled after Tim Pope's Rails.vim. It provides navigation
+shortcuts and cool testing features for Grails projects.
 
 Even if you use an IDE most of the time, Grails-vim is handy when you don't
-have 10 minutes to wait for an IDE to start or if you're on a machine with less
-than 2 TB of memory. 
-
-==============================================================================
-2. Functionality provided                              *Grails-vimFunctionality*
+want to wait 10 minutes for your IDE to start or if you're on a machine with
+less than 2 TB of memory.
 
 ------------------------------------------------------------------------------
-2.1. Global Commands                                  *Grails-vimGlobalCommands*
+Navigation mappings                                  *Grails-vimNavigationMappings*
 
-:Grails-vim [<start-directory> | <bookmark>]                         *:Grails-vim*
-    Opens a fresh NERD tree. The root of the tree depends on the argument
-    given. There are 3 cases: If no argument is given, the current directory
-    will be used.  If a directory is given, that will be used. If a bookmark
-    name is given, the corresponding directory will be used.  For example: >
-        :Grails-vim /home/marty/vim7/src
-        :Grails-vim foo   (foo is the name of a bookmark)
-<
-:Grails-vimFromBookmark <bookmark>                       *:Grails-vimFromBookmark*
-    Opens a fresh NERD tree with the root initialized to the dir for
-    <bookmark>.  This only reason to use this command over :Grails-vim is for
-    the completion (which is for bookmarks rather than directories).
+Currently, all Grails-vim mappings begin with <leader>g.  In the future this will be
+configurable.
 
-:Grails-vimToggle [<start-directory> | <bookmark>]             *:Grails-vimToggle*
-    If a NERD tree already exists for this tab, it is reopened and rendered
-    again.  If no NERD tree exists for this tab then this command acts the
-    same as the |:Grails-vim| command.
+<leader>gd              Jump to current file's corresponding Domain Model
+<leader>gc              Jump to current file's corresponding Controller
+<leader>gv              Opens a Netrw screen with the views that correspond to the current file.
+<leader>gs              Jump to corresponding Service (Ex: User.groovy -> UserService.groovy)
 
-:Grails-vimMirror                                              *:Grails-vimMirror*
-    Shares an existing NERD tree, from another tab, in the current tab.
-    Changes made to one tree are reflected in both as they are actually the
-    same buffer.
-
-    If only one other NERD tree exists, that tree is automatically mirrored. If
-    more than one exists, the script will ask which tree to mirror.
-
-:Grails-vimClose                                                *:Grails-vimClose*
-    Close the NERD tree in this tab.
-
-:Grails-vimFind                                                  *:Grails-vimFind*
-    Find the current file in the tree. If no tree exists for the current tab,
-    or the file is not under the current root, then initialize a new tree where
-    the root is the directory of the current file.
 
 ------------------------------------------------------------------------------
-2.2. Bookmarks                                             *Grails-vimBookmarks*
+Testing mappings                                  *Grails-vimTestingMappings*
 
-Bookmarks in the NERD tree are a way to tag files or directories of interest.
-For example, you could use bookmarks to tag all of your project directories.
+Grails-vim has some handy features for jumping from tests to test-reports.  I find them
+handier than looking at the HTML test reports that are created by Grails.
 
-------------------------------------------------------------------------------
-2.2.1. The Bookmark Table                              *Grails-vimBookmarkTable*
+<leader>gg              Opens |quickfix-window| with a list of failed tests.  
+                        Press <Enter> in the quickfix window to jump to the failed tests.
+                        You can use Vim's built-in |quickfix| functionality for navigating tests.
 
-If the bookmark table is active (see |Grails-vim-B| and
-|'Grails-vimShowBookmarks'|), it will be rendered above the tree. You can double
-click bookmarks or use the |Grails-vim-o| mapping to activate them. See also,
-|Grails-vim-t| and |Grails-vim-T|
+<leader>gr              Jump to the text report for the current file.  For example, if you're in
+                        UserTests.groovy, Grails-vim will jump to the output file for that test, where
+                        you can see the details of the test output / errors and stack traces.
+
+<leader>gt              Jump to the test for the current file.  For example, if you're in
+                        User.groovy, you will jump to UserTests.groovy
+
+<leader>gx              Jump to the XML test output for the current file.  XML
+                        versions of the test reports are of course more structured, and can help with
+                        debugging tests.
 
 ------------------------------------------------------------------------------
 2.2.2. Bookmark commands                            *Grails-vimBookmarkCommands*
