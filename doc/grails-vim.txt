@@ -12,6 +12,15 @@ want to wait 10 minutes for your IDE to start or if you're on a machine with
 less than 2 TB of memory.
 
 ------------------------------------------------------------------------------
+Installation                                  *Grails-vim-Installation*
+
+Install grails-vim by unzipping into your ~/.vim directory.
+
+If you want to see Grails test results in Vim, $GROOVY_HOME needs to be set
+correctly and groovy needs to be on your $PATH in order for the <leader>gg
+command to run correctly.
+
+------------------------------------------------------------------------------
 Navigation mappings                                  *Grails-vim-Navigation-Mappings*
 
 Currently, all Grails-vim mappings begin with <leader>g.  In the future this will be
@@ -26,12 +35,25 @@ configurable.
 ------------------------------------------------------------------------------
 Testing mappings                                     *Grails-vim-Testing-Mappings*
 
-Grails-vim has some handy features for jumping from tests to test-reports.  I find them
-handier than looking at the HTML test reports that are created by Grails.
+After tests are run, Grails fills the target/test-reports directory with some
+interesting information.  Grails-vim helps navigate those files.
+
+Before using these mappings, run the tests for your Grails app.  The author
+of Grails-vim think that tests are a pain, but when you have decent toolset
+for writing and debugging tests, they're less painful.
+
+Grails-vim has some handy features for jumping from tests to test-reports.  I
+find them handy for diving into the text and xml reports, which often contain
+more information than the HTML reports and are easier to grep.
 
 <leader>gg              Opens |quickfix-window| with a list of failed tests.  
                         Press <Enter> in the quickfix window to jump to the failed tests.
                         You can use Vim's built-in |quickfix| functionality for navigating tests.
+                        
+                        Note: This list is created by running a script that's
+                        written in Groovy.  Make sure your $GROOVY_HOME
+                        environment variable is set, and that groovy is on
+                        your $PATH.
 
 <leader>gr              Jump to the text report for the current file.  For example, if you're in
                         UserTests.groovy, Grails-vim will jump to the output file for that test, where
@@ -69,6 +91,24 @@ Changelog                                               *Grails-vim-Changelog*
     see the views that belong to <model>
 
     View errors/failed tests using <leader>gg
+
+==============================================================================
+Future Plans                                               *Grails-vim-Future*
+
+The following features are floating around as ideas:
+
+  - Jump to multiple files.  If you have UserUnitTests and
+    UserFunctionalTests, then a menu will pop up, and allow you to pick which
+    file to jump to.  Smart-menu system should be used so that the frequently
+    used files are at the top of the menu.
+
+  - Split-open windows.  For example, <leader>gt would open a file's test in a
+    split window.
+  
+  - Smarter test-report jumps.
+    When you're in testSomething() method, and jump to the test reports, Vim
+    should find testSomething()'s output and jump to it, rather than forcing
+    the user to look through the test-report file
 
 ==============================================================================
 Credits                                                   *Grails-vim-Credits*
