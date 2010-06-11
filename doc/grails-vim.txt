@@ -20,6 +20,10 @@ If you want to see Grails test results in Vim, $GROOVY_HOME needs to be set
 correctly and groovy needs to be on your $PATH in order for the <leader>gg
 command to run correctly.
 
+Grails-vim is hosted at github:
+
+http://github.com/NathanNeff/grails-vim
+
 ------------------------------------------------------------------------------
 Navigation mappings                                  *Grails-vim-Navigation-Mappings*
 
@@ -59,6 +63,11 @@ Before using these mappings, run the tests for your Grails app.
                         versions of the test reports are of course more structured, and can help with
                         debugging tests.
 
+==============================================================================
+Screenshots                                                *Grails-vim-Screenshots*
+
+View output of Test Results
+  - http://notesmine.com/grails_vim#jump_to_test_results
 
 ==============================================================================
 About                                                       *Grails-vim-About*
