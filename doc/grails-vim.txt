@@ -5,7 +5,8 @@ Introduction                                                            *Grails-
 What is Grails-Vim?
 
 Grails-Vim is modeled after Tim Pope's Rails.vim. It provides navigation
-shortcuts and cool testing features for Grails projects.
+shortcuts and cool testing features for Grails projects, as well as some basic
+gsp syntax highlighting
 
 Even if you use an IDE most of the time, Grails-vim is handy when you don't
 want to wait 10 minutes for your IDE to start or if you're on a machine with
@@ -92,9 +93,6 @@ complaining about other people's software and start giving back.
 
 Please contact me at nathan.neff@gmail.com with any questions, feedback, requests or
 patches.
-
-The latest stable versions can be found at
-    TODO
 
 The latest dev versions are on github
     http://github.com/NathanNeff/grails-vim
