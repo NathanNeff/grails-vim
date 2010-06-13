@@ -205,7 +205,7 @@ function! s:GrailsOpenItem(thisItem, ...)
     endif
 endfunction
 
-function! s:GrailsControllerMarks(silent)
+function! grails#GrailsControllerMarks(silent)
     " Todo: find better way to restore orig. pos.
     exe "ma z"
     exe "silent g/def\ delete\\>/ma\ d"
@@ -260,7 +260,7 @@ noremap <unique> <script> <Plug>GrailsDisplayTestXml <SID>GrailsDisplayTestXml
 noremap <SID>GrailsDisplayTestXml :call <SID>GrailsDisplayTestXml()<CR>
 
 noremap <unique> <script> <Plug>GrailsControllerMarks <SID>GrailsControllerMarks
-noremap <SID>GrailsControllerMarks :call <SID>GrailsControllerMarks()<CR>
+noremap <SID>GrailsControllerMarks :call grails#GrailsControllerMarks()<CR>
 " }}}1
 
 let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
