@@ -261,6 +261,9 @@ noremap <SID>GrailsDisplayTestXml :call <SID>GrailsDisplayTestXml()<CR>
 
 noremap <unique> <script> <Plug>GrailsControllerMarks <SID>GrailsControllerMarks
 noremap <SID>GrailsControllerMarks :call grails#GrailsControllerMarks()<CR>
+
+noremap <unique> <script> <Plug>GrailsUrlMappings <SID>GrailsUrlMappings
+noremap <SID>GrailsUrlMappings :call <SID>GrailsOpenItem("UrlMappings.groovy")<CR>
 " }}}1
 
 let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
@@ -273,12 +276,12 @@ endif
 
 
 function s:GrailsMap(char, mapping)
-    let l:curMap = maparg(g:GrailsVimMapLeader . a:char) 
+    let l:curMap = maparg(g:GrailsMapLeader . a:char) 
     if l:curMap == ""
-        exe "map <unique> <silent> " . g:GrailsVimMapLeader . a:char . " " . a:mapping
+        exe "map <unique> <silent> " . g:GrailsMapLeader . a:char . " " . a:mapping
     else
         echo "Grails-vim:  Won't map " . a:mapping . ".  " . 
-                    \ g:GrailsVimMapLeader . a:char . " is already mapped to " . l:curMap
+                    \ g:GrailsMapLeader . a:char . " is already mapped to " . l:curMap
     endif
 
 endfunction
