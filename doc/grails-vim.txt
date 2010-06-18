@@ -18,6 +18,9 @@ less than 2 TB of memory.
     - Controller Navigation......... |grails-vim-controller-navigation|
     - Testing ...................... |grails-vim-testing|
     - Customizing .................. |grails-vim-customizing|
+    - About ........................ |grails-vim-about|
+    - Credits ...................... |grails-vim-credits|
+    - License ...................... |grails-vim-license|
 
 ------------------------------------------------------------------------------
 Installation                                  *grails-vim-installation*
@@ -114,7 +117,7 @@ Shortcut:                Purpose:
                          Calls <Plug>GrailsDisplayTestXml
 
 ------------------------------------------------------------------------------
-Controller navigation                         *grails-vim-conroller-navigation*
+Controller navigation                         *grails-vim-controller-navigation*
 
 When you open a Controller, you can use the following quick-marks to quickly navigate
 the controller:
@@ -229,4 +232,4 @@ Thanks to the following people for testing, bug reports, ideas etc.
 ==============================================================================
 License                                       *Grails-vim-License*
 
-arails-vim is licensed under some license.
+Grails-vim is licensed under the same license as Vim.  See |license|
