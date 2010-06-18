@@ -261,24 +261,27 @@ noremap <SID>GrailsDisplayTestXml :call <SID>GrailsDisplayTestXml()<CR>
 
 noremap <unique> <script> <Plug>GrailsControllerMarks <SID>GrailsControllerMarks
 noremap <SID>GrailsControllerMarks :call grails#GrailsControllerMarks()<CR>
+
+noremap <unique> <script> <Plug>GrailsUrlMappings <SID>GrailsUrlMappings
+noremap <SID>GrailsUrlMappings :call <SID>GrailsOpenItem("UrlMappings.groovy")<CR>
 " }}}1
 
 let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
 
 " Mappings {{{1
 " Default the Grails-Vim Mapleader to leader g.
-if !exists("g:GrailsVimMapLeader")
-    let g:GrailsVimMapLeader=mapleader . "g"
+if !exists("g:GrailsMapLeader")
+    let g:GrailsMapLeader=mapleader . "g"
 endif
 
 
 function s:GrailsMap(char, mapping)
-    let l:curMap = maparg(g:GrailsVimMapLeader . a:char) 
+    let l:curMap = maparg(g:GrailsMapLeader . a:char) 
     if l:curMap == ""
-        exe "map <unique> <silent> " . g:GrailsVimMapLeader . a:char . " " . a:mapping
+        exe "map <unique> <silent> " . g:GrailsMapLeader . a:char . " " . a:mapping
     else
         echo "Grails-vim:  Won't map " . a:mapping . ".  " . 
-                    \ g:GrailsVimMapLeader . a:char . " is already mapped to " . l:curMap
+                    \ g:GrailsMapLeader . a:char . " is already mapped to " . l:curMap
     endif
 
 endfunction
@@ -286,12 +289,12 @@ endfunction
 call <SID>GrailsMap("c", "<Plug>GrailsDisplayController")
 call <SID>GrailsMap("d", "<Plug>GrailsDisplayDomainClass")
 call <SID>GrailsMap("g", "<Plug>GrailsReadTestOutput")
+call <SID>GrailsMap("m", "<Plug>GrailsControllerMarks")
 call <SID>GrailsMap("r", "<Plug>GrailsDisplayTestReports")
 call <SID>GrailsMap("s", "<Plug>GrailsDisplayService")
 call <SID>GrailsMap("t", "<Plug>GrailsDisplayTests")
 call <SID>GrailsMap("v", "<Plug>GrailsDisplayViews")
 call <SID>GrailsMap("x", "<Plug>GrailsDisplayTestXml")
-call <SID>GrailsMap("m", "<Plug>GrailsControllerMarks")
 
 " }}}1
 " vim: set fdm=marker:
