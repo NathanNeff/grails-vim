@@ -268,7 +268,7 @@ let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp)
 " Mappings {{{1
 " Default the Grails-Vim Mapleader to leader g.
 if !exists("g:GrailsVimMapLeader")
-    let g:GrailsVimMapLeader=mapleader . "g"
+    let g:GrailsVimMapLeader='<Leader>g'
 endif
 
 
@@ -286,12 +286,12 @@ endfunction
 call <SID>GrailsMap("c", "<Plug>GrailsDisplayController")
 call <SID>GrailsMap("d", "<Plug>GrailsDisplayDomainClass")
 call <SID>GrailsMap("g", "<Plug>GrailsReadTestOutput")
+call <SID>GrailsMap("m", "<Plug>GrailsControllerMarks")
 call <SID>GrailsMap("r", "<Plug>GrailsDisplayTestReports")
 call <SID>GrailsMap("s", "<Plug>GrailsDisplayService")
 call <SID>GrailsMap("t", "<Plug>GrailsDisplayTests")
 call <SID>GrailsMap("v", "<Plug>GrailsDisplayViews")
 call <SID>GrailsMap("x", "<Plug>GrailsDisplayTestXml")
-call <SID>GrailsMap("m", "<Plug>GrailsControllerMarks")
 
 " }}}1
 " vim: set fdm=marker:
