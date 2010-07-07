@@ -269,19 +269,19 @@ noremap <SID>GrailsDisplayUrlMappings :call <SID>GrailsOpenItem("UrlMappings.gro
 let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
 
 " Mappings {{{1
-" Default the Grails-Vim Mapleader to leader g.
-if !exists("g:GrailsMapLeader")
-    let g:GrailsMapLeader='<Leader>g'
+" Default the Grails-Vim MapPrefix to leader g.
+if !exists("g:GrailsMapPrefix")
+    let g:GrailsMapPrefix='<Leader>g'
 endif
 
 
 function s:GrailsMap(char, mapping)
-    let l:curMap = maparg(g:GrailsMapLeader . a:char) 
+    let l:curMap = maparg(g:GrailsMapPrefix . a:char) 
     if l:curMap == ""
-        exe "map <unique> <silent> " . g:GrailsMapLeader . a:char . " " . a:mapping
+        exe "map <unique> <silent> " . g:GrailsMapPrefix . a:char . " " . a:mapping
     else
         echo "Grails-vim:  Won't map " . a:mapping . ".  " . 
-                    \ g:GrailsMapLeader . a:char . " is already mapped to " . l:curMap
+                    \ g:GrailsMapPrefix . a:char . " is already mapped to " . l:curMap
     endif
 
 endfunction
