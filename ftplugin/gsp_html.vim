@@ -7,10 +7,6 @@ if exists("loaded_matchit")
     \ '<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>'
 endif
 
-
-" Custom gsp Mapping
-" which surrounds a word with ${}
-map <buffer> <leader>a ciw${}<ESC>P
 if &ft != 'gsp.html' 
     set ft=gsp.html
 endif
