@@ -1,0 +1,8 @@
+# these files are excluded from the zip process when uploading
+# to vim.org
+excluded-files
+.git
+.gitignore
+.netrwhist
+README.TXT
+sync_it.sh
