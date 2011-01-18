@@ -4,13 +4,6 @@ if match(thisFile, 'Controller$') != -1
     call grails#GrailsControllerMarks(1)
 endif
 
-<<<<<<< HEAD
-" Set foldmethod to look for standard open/close braces.
-setlocal foldmethod=marker foldmarker={,}
-" Set foldlevel to 1, which folds up to the top-level methods/actions of
-" a Groovy class.
-setlocal foldlevel=1
-=======
 " Create nice folding methods for Groovy / Grails filez
 " Example:
 " class Foo {
@@ -25,7 +18,6 @@ setlocal foldmethod=marker foldmarker={,}
 " a Groovy class.
 setlocal foldlevel=1
 
->>>>>>> 4e612655f317504153e7f28ef9b41e8c93ef2191
 " Avoid showing a bunch of dashes and the number of lines folded:
 setlocal fillchars=fold:\  foldtext=getline(v:foldstart)
 
