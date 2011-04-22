@@ -28,9 +28,5 @@ setlocal fillchars=fold:\  foldtext=getline(v:foldstart)
 "    zm  : fold (m)ore
 "    zr  : (r)educe folding
 "    See :h folding for more options
-<<<<<<< HEAD
-=======
-
 " Set tabstop = 4 (convention for groovy files)
 setlocal tabstop=4
->>>>>>> 4e612655f317504153e7f28ef9b41e8c93ef2191
