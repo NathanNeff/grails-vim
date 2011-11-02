@@ -32,9 +32,11 @@ setlocal fillchars=fold:\  foldtext=getline(v:foldstart)
 setlocal tabstop=4
 
 " Run groovy script with F5
-map <F5> :!groovy %<CR>
-imap <F5> <C-O>:!groovy %<CR>
+if mapcheck("<F5>") == ""
+    map <unique> <F5> :w<bar>:!groovy %<CR>
+    imap <unique> <F5> <C-O>:w<bar>:!groovy %<CR>
+endif
 
-map <S-F5> :r! groovy %<CR>
-imap <S-F5> <C-O>:r! groovy %<CR>
+map <S-F5> :w<bar>:r! groovy %<CR>
+imap <S-F5> <C-O>:w<bar>:r! groovy %<CR>
 
