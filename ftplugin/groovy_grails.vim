@@ -39,4 +39,3 @@ endif
 
 map <S-F5> :w<bar>:r! groovy %<CR>
 imap <S-F5> <C-O>:w<bar>:r! groovy %<CR>
-
