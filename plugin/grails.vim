@@ -233,10 +233,23 @@ function s:GrailsReadTestOutput()
     let &efm = old_efm
 endfunction
 
+function s:GrailsReadStackTrace()
+
+    let old_efm = &efm
+    " format is file:lineNumber:message
+    set efm=%f:%l:%m
+    cexpr system(s:stackTraceParseScript)
+    botright copen
+
+    let &efm = old_efm
+endfunction
 "}}}1
 " Define Commands{{{1
 noremap <unique> <script> <Plug>GrailsReadTestOutput <SID>GrailsReadTestOutput
 noremap <SID>GrailsReadTestOutput :call <SID>GrailsReadTestOutput()<CR>
+
+noremap <unique> <script> <Plug>GrailsReadStackTrace <SID>GrailsReadStackTrace
+noremap <SID>GrailsReadStackTrace :call <SID>GrailsReadStackTrace()<CR>
 
 noremap <unique> <script> <Plug>GrailsDisplayViews <SID>GrailsDisplayViews
 noremap <SID>GrailsDisplayViews :call <SID>GrailsDisplayViews()<CR>
@@ -267,6 +280,7 @@ noremap <SID>GrailsDisplayUrlMappings :call <SID>GrailsOpenItem("UrlMappings.gro
 " }}}1
 
 let s:parseScript=findfile('bin/testSuitesXmlParse.groovy', &rtp) 
+let s:stackTraceParseScript=findfile('bin/stackTraceParse.groovy', &rtp) 
 
 " Mappings {{{1
 " Default the Grails-Vim MapPrefix to leader g.
@@ -288,6 +302,7 @@ endfunction
 
 call <SID>GrailsMap("c", "<Plug>GrailsDisplayController")
 call <SID>GrailsMap("d", "<Plug>GrailsDisplayDomainClass")
+call <SID>GrailsMap("e", "<Plug>GrailsReadStackTrace")
 call <SID>GrailsMap("g", "<Plug>GrailsReadTestOutput")
 call <SID>GrailsMap("m", "<Plug>GrailsControllerMarks")
 call <SID>GrailsMap("r", "<Plug>GrailsDisplayTestReports")
