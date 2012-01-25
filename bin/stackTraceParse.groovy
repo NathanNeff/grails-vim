@@ -11,7 +11,10 @@ lines.each { line ->
         def relPath = m[0][2] - dir
         println relPath + ":" + m[0][1]
     }
+    else {
+        println "No Errors Found"
     }
+}
 def lastlineRead(lastlineFile) {
     def lastline = 0;
     def fh = new File(lastlineFile)
