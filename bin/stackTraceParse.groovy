@@ -15,6 +15,18 @@ lines.each { line ->
         println "No Errors Found"
     }
 }
+
+lastline += lines.size() - 1
+saveLastLine(lastlineFile, lastline)
+
+def saveLastLine(lastlineFile, lineNum) {
+    def output = """This file is used to track the last line read in stacktrace.log by grails-vim's stackTraceParse.groovy file.
+If you're experiencing problems with grails-vim's GrailsReadStackTrace command, try deleting this file.
+${lineNum}
+"""
+    new File(lastlineFile).append(output)
+}
+
 def lastlineRead(lastlineFile) {
     def lastline = 0;
     def fh = new File(lastlineFile)
