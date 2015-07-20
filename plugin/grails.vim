@@ -13,6 +13,9 @@ if &cp || (exists("g:loaded_grails") && g:loaded_grails)
 endif
 
 let g:loaded_grails = 1
+if !exists("g:grails_tests_suffix")
+  let g:grails_tests_suffix = "Tests"
+endif
 
 " If we're in a grails directory, then
 " perform initialization
@@ -100,11 +103,11 @@ function! s:GrailsDisplayTests()
     " Get the name of the current file we're on
     " TODO: Maybe we'll prompt someday
     let currentItem =  expand("%:t:r")
-    let currentItem = substitute(currentItem, "Tests$", "", "")
+    let currentItem = substitute(currentItem, g:grails_tests_suffix."$", "", "")
     " If we're in a test report, we'll have all kinds of garbage at the front.
     " Remove it.
     let currentItem = substitute(currentItem, "^.*TEST-.*-", "", "")
-    let currentItem = currentItem . "Tests.groovy"
+    let currentItem = currentItem . g:grails_tests_suffix.".groovy"
     echo "Opening item: " . currentItem
     call s:GrailsOpenItem(currentItem)
 endfunction
@@ -119,7 +122,7 @@ function! s:GrailsDisplayTestReports()
     let currentItem =  expand("%:t:r")
     " Zap the TEST-blahblah if we're in a test
     let currentItem = s:GrailsStripTest(currentItem)
-    let testGlob = substitute(currentItem, "Tests$", "", "") . "Tests.txt"
+    let testGlob = substitute(currentItem, g:grails_tests_suffix."$", "", "") . g:grails_tests_suffix.".txt"
     let testGlob =  "**/TEST-*" . testGlob
     " Use glob path to try to find the file.
     " Search in Grails pre 1.2 and 1.2+ paths
@@ -144,7 +147,7 @@ function! s:GrailsDisplayTestXml()
     let currentItem =  expand("%:t:r")
     " Zap the TEST-blahblah if we're in a test
     let currentItem = s:GrailsStripTest(currentItem)
-    let testGlob = substitute(currentItem, "Tests$", "", "") . "Tests.xml"
+    let testGlob = substitute(currentItem, g:grails_tests_suffix."$", "", "") . g:grails_tests_suffix.".xml"
     let testGlob =  "**/TEST-*" . testGlob
     " Use glob path to try to find the file.
     " Search in Grails pre 1.2 and 1.2+ paths
